@@ -12,7 +12,7 @@ interface AuthStore {
   logout: () => Promise<void>;
 }
 
-const useAuthStore = create<AuthStore>((set, get) => ({
+const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   loading: false, // 👈 start as false, only true when fetching
   isAuthenticated: false,

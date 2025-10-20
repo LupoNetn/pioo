@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { bookingSchema } from "../schemas/bookingSchema";
 import type { BookingFormData } from "../schemas/bookingSchema";
 import { Button } from "../components/ui/button";
-import { CalendarDays, Clock, Music, User } from "lucide-react";
+import { CalendarDays, Clock } from "lucide-react";
 import useAuthStore from "../stores/useAuthStore";
 import api from "../lib/axios";
 import { toast } from "sonner";

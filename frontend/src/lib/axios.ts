@@ -8,11 +8,11 @@ const api = axios.create({
 // 1. Global flag to track if a refresh is currently in progress
 let isRefreshing = false;
 // 2. A queue of requests waiting for the token refresh to complete
-let failedQueue = [];
+let failedQueue: any = [];
 
 // Function to process the queue with the new access token (or errors)
-const processQueue = (error, token = null) => {
-  failedQueue.forEach(prom => {
+const processQueue = (error: any, token = null) => {
+  failedQueue.forEach((prom: any) => {
     if (error) {
       // Reject waiting requests if the refresh failed
       prom.reject(error);

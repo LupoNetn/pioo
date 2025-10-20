@@ -3,7 +3,6 @@ import { NAV_ITEMS } from "../constants/constants";
 import { LogIn, LogOut, Menu, X } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +13,6 @@ import {
 import useAuthStore from "../stores/useAuthStore";
 
 const Navbar = () => {
-  const navigate = useNavigate()
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state: any) => state.user);
   const logout = useAuthStore((state: any) => state.logout);
