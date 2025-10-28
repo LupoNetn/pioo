@@ -1,41 +1,29 @@
 import { Link } from "react-router";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Button } from "./../ui/button";
+import { Card, CardContent, CardHeader } from "./../ui/card";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "../schemas/signUpSchema";
-import { z } from "zod";
-import api  from "../lib/axios";
-import { toast } from "sonner";
+import { loginSchema } from "../../schemas/loginSchema";
+import type { LoginFormData } from "../../schemas/loginSchema";
+import useAuthStore from "../../stores/useAuthStore";
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
-
-const SignUp = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
-    mode: "onBlur", // validates when user leaves input
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: "onBlur",
   });
+  const login = useAuthStore((state: any) => state.login)
 
-  const onSubmit = async (data: SignUpFormData) => {
-    try {
-      console.log("Form Data:", data);
-      const res = await api.post('/auth/signup',data)
-      toast.success("Account created successfully!")
-      console.log(res)
-      
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
-      toast.error(error.response?.data?.message || "Signup failed. Try again!")
-    }
+  const onSubmit = async (data: LoginFormData) => {
+   login(data)
   };
 
-  const handleGoogleSignUp = () => {
-    // Redirect to your backend Google OAuth endpoint
+  const handleGoogleLogin = () => {
     window.location.href = "http://localhost:8080/api/auth/google";
   };
 
@@ -44,32 +32,17 @@ const SignUp = () => {
       <Card className="border-1 border-border max-w-xl mx-auto">
         <CardHeader>
           <h2 className="text-xl sm:text-2xl font-semibold">
-            Sign up – Let’s create magic!
+            Log In – Let’s create magic!
           </h2>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Name */}
-            <div>
-              <input
-                type="text"
-                placeholder="Input Your Name...."
-                {...register("name")}
-                className="border-b border-border w-full p-3 rounded-xl placeholder:text-xs hover:border-accent focus:border-accent"
-              />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-
             {/* Username */}
             <div>
               <input
                 type="text"
-                placeholder="Input Your Username (Stage Name)...."
+                placeholder="Enter your username..."
                 {...register("username")}
                 className="border-b border-border w-full p-3 rounded-xl placeholder:text-xs hover:border-accent focus:border-accent"
               />
@@ -80,26 +53,11 @@ const SignUp = () => {
               )}
             </div>
 
-            {/* Email */}
-            <div>
-              <input
-                type="email"
-                placeholder="Input Your Email...."
-                {...register("email")}
-                className="border-b border-border w-full p-3 rounded-xl placeholder:text-xs hover:border-accent focus:border-accent"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-
             {/* Password */}
             <div>
               <input
                 type="password"
-                placeholder="Input Your Password...."
+                placeholder="Enter your password..."
                 {...register("password")}
                 className="border-b border-border w-full p-3 rounded-xl placeholder:text-xs hover:border-accent focus:border-accent"
               />
@@ -117,7 +75,7 @@ const SignUp = () => {
                 className="bg-accent p-5 w-full hover:opacity-80 transition"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Signing up..." : "Sign up"}
+                {isSubmitting ? "Logging in..." : "Log In"}
               </Button>
             </div>
           </form>
@@ -129,22 +87,22 @@ const SignUp = () => {
             <hr className="flex-1" />
           </div>
 
-          {/* Google Signup */}
+          {/* Google Login */}
           <div className="mt-5 w-full">
             <Button
-              onClick={handleGoogleSignUp}
+              onClick={handleGoogleLogin}
               type="button"
               className="border border-border w-full p-5 flex gap-2 justify-center items-center font-heading cursor-pointer hover:bg-accent transition"
             >
               <FcGoogle className="text-lg" />
-              <span>Continue With Google</span>
+              <span>Continue with Google</span>
             </Button>
           </div>
 
-          {/* Login Redirect */}
+          {/* Signup Redirect */}
           <div className="mt-5 text-xs text-gray-400 text-center mx-auto">
-            <Link to="/auth/login" className="hover:text-accent transition">
-              Already have an account? Log in!
+            <Link to="/auth" className="hover:text-accent transition">
+              Don’t have an account? Sign up!
             </Link>
           </div>
         </CardContent>
@@ -153,4 +111,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Login;

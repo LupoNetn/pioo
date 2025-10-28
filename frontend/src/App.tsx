@@ -5,11 +5,11 @@ import BookingPage from "./pages/BookingPage";
 import ProfilePage from "./pages/ProfilePage";
 import Beats from "./pages/Beats";
 import AuthPage from "./pages/AuthPage";
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
+import SignUp from "./components/authcomponents/SignUp";
+import Login from "./components/authcomponents/Login";
 import { Toaster } from "sonner";
-import AuthSuccess from "./components/AuthSuccess";
-import AuthFailure from "./components/AuthFailure";
+import AuthSuccess from "./components/authcomponents/AuthSuccess";
+import AuthFailure from "./components/authcomponents/AuthFailure";
 import ProtectedLayout from "./components/ProtectedLayout";
 import Spinner from "./components/Spinner";
 import useAuthStore from "./stores/useAuthStore";
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         element: <ProtectedLayout />,
         children: [
           { path: "/booking", element: <BookingPage /> },
-          { path: "/profile", element: <ProfilePage /> },
+          { path: "/dashboard", element: <ProfilePage /> },
           { path: "/purchase-a-beat", element: <Beats /> },
         ],
       },
@@ -46,10 +46,13 @@ const router = createBrowserRouter([
 const App = () => {
   const fetchUser = useAuthStore((state) => state.fetchUser);
   const loading = useAuthStore((state) => state.loading);
+  const refreshToken = localStorage.getItem('refreshToken')
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    if(refreshToken) {
+      fetchUser()
+    } 
+  },[])
 
   if (loading) {
     return <Spinner />;

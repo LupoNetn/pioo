@@ -5,7 +5,6 @@ import { toast } from "sonner";
 interface AuthStore {
   user: any | null;
   loading: boolean;
-  isAuthenticated: boolean;
   refreshToken: string | null;
   fetchUser: () => Promise<void>;
   login: (data: any) => Promise<void>;
@@ -14,32 +13,8 @@ interface AuthStore {
 
 const useAuthStore = create<AuthStore>((set) => ({
   user: null,
-  loading: false, // 👈 start as false, only true when fetching
-  isAuthenticated: false,
+  loading: false, 
   refreshToken: null,
-
-  // fetchUser: async () => {
-  //   set({ loading: true }); // 👈 mark start of request
-  //   try {
-  //     const res = await api.get("/user/", { withCredentials: true });
-
-  //     set({
-  //       user: res.data.user,
-  //       isAuthenticated: true,
-  //       loading: false
-  //     });
-  //   } catch (err) {
-  //     console.error("Fetch user failed:", err);
-  //     set({
-  //       user: null,
-  //       isAuthenticated: false,
-  //       refreshToken: null,
-  //       loading: false
-  //     });
-  //   } finally {
-  //     set({ loading: false }); // 👈 always turn off loading
-  //   }
-  // },
 
   fetchUser: async () => {
     set({ loading: true })
@@ -66,9 +41,14 @@ const useAuthStore = create<AuthStore>((set) => ({
         withCredentials: true,
       });
 
+     
+      const refreshToken = res.data.refreshToken;
+
+     
+      localStorage.setItem('refreshToken', refreshToken)
+
       set({
         refreshToken: res.data.refreshToken,
-        isAuthenticated: true,
         user: res.data.user || null,
       });
 
@@ -77,7 +57,7 @@ const useAuthStore = create<AuthStore>((set) => ({
     } catch (error: any) {
       console.error("Login failed:", error);
       toast.error(error.response?.data?.message || "Login failed. Try again!");
-      set({ isAuthenticated: false, refreshToken: null });
+      set({ refreshToken: null });
     } finally {
       set({ loading: false });
     }
@@ -89,9 +69,9 @@ const useAuthStore = create<AuthStore>((set) => ({
       await api.post("/auth/logout", {}, { withCredentials: true });
       set({
         user: null,
-        isAuthenticated: false,
         refreshToken: null,
       });
+      localStorage.removeItem('refreshToken')
       toast.success("Logged out successfully!");
       window.location.href = "/auth/login";
     } catch (err) {

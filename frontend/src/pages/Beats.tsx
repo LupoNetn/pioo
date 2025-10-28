@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const Beats = () => {
   return (
-    <section className="font-audio app-container pt-16 mt-20 flex flex-col items-center min-h-screen">
+    <section className="font-heading app-container pt-16 mt-20 flex flex-col items-center min-h-screen">
       {/* Header */}
       <div className="text-left mb-10 w-full">
         <h2 className="text-4xl font-bold mb-2 text-white">

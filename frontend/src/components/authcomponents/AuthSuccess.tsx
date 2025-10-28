@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import api from "../lib/axios"; // axios instance
+import api from "../../lib/axios"; // axios instance
 
 const AuthSuccess = () => {
   const navigate = useNavigate();
