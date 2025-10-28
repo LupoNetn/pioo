@@ -6,9 +6,6 @@ import ServicesSection from '../components/homeComponents/ServicesSection'
 
 const HomePage = () => {
 
- const handleGoogleLogin = () => {
-  window.location.href = "http://localhost:8080/api/auth/google";
-};
 
 
   return (
@@ -17,12 +14,7 @@ const HomePage = () => {
        <div className=''>
         <HeroSection />
        </div>
-       {/* demo signup */}
-       <div>
-        <button onClick={handleGoogleLogin}>
-          <p className='font-audio text-white'>Sign with google</p>
-        </button>
-       </div>
+      
       <div>
         <ProjectsSection />
       </div>
