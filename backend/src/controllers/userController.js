@@ -58,3 +58,7 @@ export const getUser = async (req, res) => {
     });
   }
 };
+
+export const returnX = (req, res) => {
+  res.status(200).json({ message: "X returned successfully" });
+}
